@@ -13,25 +13,39 @@ import android.widget.EditText;
 
 import com.example.administrator.myeasydemo.R;
 import com.example.administrator.myeasydemo.commons.ActivityUtils;
+import com.example.administrator.myeasydemo.commons.LogUtils;
 import com.example.administrator.myeasydemo.commons.RegexUtils;
 import com.example.administrator.myeasydemo.components.ProgressDialogFragment;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
+
+import static com.example.administrator.myeasydemo.R.*;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    @BindView(R.id.toolbar)
+    @BindView(id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.et_username)
+    @BindView(id.et_username)
     EditText et_userName;
-    @BindView(R.id.et_pwd)
+    @BindView(id.et_pwd)
     EditText et_pwd;
-    @BindView(R.id.et_pwdAgain)
+    @BindView(id.et_pwdAgain)
     EditText et_pwdAgain;
-    @BindView(R.id.btn_register)
+    @BindView(id.btn_register)
     Button btn_register;
 
     private String username;
@@ -44,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(layout.activity_register);
         unbinder = ButterKnife.bind(this);
         activityUtils = new ActivityUtils(this);
 
@@ -69,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //监听事件
     private final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -88,19 +103,58 @@ public class RegisterActivity extends AppCompatActivity {
         }
     };
 
-    @OnClick(R.id.btn_register)
+    @OnClick(id.btn_register)
     public void onClick() {
         if (RegexUtils.verifyUsername(username) != RegexUtils.VERIFY_SUCCESS) {
-            activityUtils.showToast(R.string.username_rules);
+            activityUtils.showToast(string.username_rules);
             return;
         } else if (RegexUtils.verifyPassword(password) != RegexUtils.VERIFY_SUCCESS) {
-            activityUtils.showToast(R.string.password_rules);
+            activityUtils.showToast(string.password_rules);
             return;
         } else if (!TextUtils.equals(password, pwd_again)) {
-            activityUtils.showToast(R.string.username_equal_pwd);
+            activityUtils.showToast(string.username_equal_pwd);
             return;
         }
         activityUtils.showToast("执行注册的网络请求");
+
+        visitHttp();
+    }
+
+    //    执行注册的网络请求
+    private void visitHttp() {
+        //日志拦截器
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        //设置级别
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build();
+
+        final RequestBody requestBody = new FormBody.Builder()
+                .add("username", username)
+                .add("password", password)
+                .build();
+
+
+        httpClient.newCall(new Request.Builder()
+                .url("http://wx.feicuiedu.com:9094/yitao/UserWeb?method=register")
+                .post(requestBody).build())
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        //连接失败
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        //拿到响应
+                        if (response.isSuccessful()) {
+                            //拿到响应体
+                            ResponseBody responseBody = response.body();
+                            //解析
+                        }
+                    }
+                });
     }
 
     @Override

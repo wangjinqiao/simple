@@ -16,10 +16,20 @@ import com.example.administrator.myeasydemo.R;
 import com.example.administrator.myeasydemo.commons.ActivityUtils;
 import com.example.administrator.myeasydemo.components.ProgressDialogFragment;
 
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -97,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btn_login:
                 activityUtils.showToast("执行登陆的网络请求");
+                visitHttp();
                 break;
             case R.id.tv_register:
                 activityUtils.startActivity(RegisterActivity.class);
@@ -104,6 +115,36 @@ public class LoginActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+   // 执行登陆的网络请求
+    private void visitHttp() {
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build();
+
+        RequestBody requestBody = new FormBody.Builder()
+                .add("username", username)
+                .add("password", password)
+                .build();
+        Request request = new Request.Builder()
+                .url("http://wx.feicuiedu.com:9094/yitao/UserWeb?method=login")
+                .post(requestBody)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
     }
 
     @Override
