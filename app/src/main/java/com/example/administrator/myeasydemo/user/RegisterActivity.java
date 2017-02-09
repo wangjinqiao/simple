@@ -16,6 +16,8 @@ import com.example.administrator.myeasydemo.commons.ActivityUtils;
 import com.example.administrator.myeasydemo.commons.LogUtils;
 import com.example.administrator.myeasydemo.commons.RegexUtils;
 import com.example.administrator.myeasydemo.components.ProgressDialogFragment;
+import com.example.administrator.myeasydemo.network.EasyShopApi;
+import com.example.administrator.myeasydemo.network.HttpEasyShopClient;
 
 import java.io.IOException;
 
@@ -115,30 +117,14 @@ public class RegisterActivity extends AppCompatActivity {
             activityUtils.showToast(string.username_equal_pwd);
             return;
         }
-        activityUtils.showToast("执行注册的网络请求");
 
         visitHttp();
     }
 
     //    执行注册的网络请求
     private void visitHttp() {
-        //日志拦截器
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        //设置级别
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient httpClient = new OkHttpClient.Builder()
-                .addInterceptor(httpLoggingInterceptor)
-                .build();
-
-        final RequestBody requestBody = new FormBody.Builder()
-                .add("username", username)
-                .add("password", password)
-                .build();
-
-
-        httpClient.newCall(new Request.Builder()
-                .url("http://wx.feicuiedu.com:9094/yitao/UserWeb?method=register")
-                .post(requestBody).build())
+        HttpEasyShopClient.getInstance()
+                .visitHttp(username, password, EasyShopApi.REGISTER)
                 .enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {

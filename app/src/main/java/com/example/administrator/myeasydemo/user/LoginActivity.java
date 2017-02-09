@@ -15,6 +15,8 @@ import android.widget.EditText;
 import com.example.administrator.myeasydemo.R;
 import com.example.administrator.myeasydemo.commons.ActivityUtils;
 import com.example.administrator.myeasydemo.components.ProgressDialogFragment;
+import com.example.administrator.myeasydemo.network.EasyShopApi;
+import com.example.administrator.myeasydemo.network.HttpEasyShopClient;
 
 import java.io.IOException;
 
@@ -54,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-         unbinder = ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         activityUtils = new ActivityUtils(this);
 
         init();
@@ -106,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                activityUtils.showToast("执行登陆的网络请求");
                 visitHttp();
                 break;
             case R.id.tv_register:
@@ -116,35 +117,22 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
     }
-   // 执行登陆的网络请求
+
+    // 执行登陆的网络请求
     private void visitHttp() {
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        HttpEasyShopClient.getInstance()
+                .visitHttp(username, password, EasyShopApi.LOGIN)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(httpLoggingInterceptor)
-                .build();
+                    }
 
-        RequestBody requestBody = new FormBody.Builder()
-                .add("username", username)
-                .add("password", password)
-                .build();
-        Request request = new Request.Builder()
-                .url("http://wx.feicuiedu.com:9094/yitao/UserWeb?method=login")
-                .post(requestBody)
-                .build();
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
 
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-            }
-        });
+                    }
+                });
     }
 
     @Override
