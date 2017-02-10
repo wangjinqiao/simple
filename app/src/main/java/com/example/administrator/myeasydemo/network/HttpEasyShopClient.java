@@ -28,8 +28,8 @@ public class HttpEasyShopClient {
     }
 
     /**
-     * 登录，注册请求
-     * post
+     *
+     * 客户端单例模式
      */
     public static synchronized HttpEasyShopClient getInstance() {
         if (easyShopClient == null) {

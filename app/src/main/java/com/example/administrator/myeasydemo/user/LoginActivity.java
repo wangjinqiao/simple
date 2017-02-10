@@ -10,13 +10,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.example.administrator.myeasydemo.R;
 import com.example.administrator.myeasydemo.commons.ActivityUtils;
+import com.example.administrator.myeasydemo.commons.LogUtils;
 import com.example.administrator.myeasydemo.components.ProgressDialogFragment;
+import com.example.administrator.myeasydemo.model.HttpResponse;
+import com.example.administrator.myeasydemo.model.UserLoginResponse;
+import com.example.administrator.myeasydemo.model.UserRegisterResponse;
+import com.example.administrator.myeasydemo.network.CallBackUI;
 import com.example.administrator.myeasydemo.network.EasyShopApi;
 import com.example.administrator.myeasydemo.network.HttpEasyShopClient;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 
@@ -31,6 +38,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 public class LoginActivity extends AppCompatActivity {
@@ -122,17 +130,29 @@ public class LoginActivity extends AppCompatActivity {
     private void visitHttp() {
         HttpEasyShopClient.getInstance()
                 .visitHttp(username, password, EasyShopApi.LOGIN)
-                .enqueue(new Callback() {
+                .enqueue(new CallBackUI<UserLoginResponse>() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
-
+                    public void onFailureUI(Call call, IOException e) {
+                        Toast.makeText(LoginActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onResponse(Call call, Response response) throws IOException {
+                    public void onResponseUI(Call call, HttpResponse<UserLoginResponse> httpResponse) {
+                        Toast.makeText(LoginActivity.this, "httpResponse="+httpResponse, Toast.LENGTH_SHORT).show();
 
                     }
+
                 });
+    }
+
+    //打印吐司
+    private void showToastOnUI(final String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

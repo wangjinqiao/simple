@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.example.administrator.myeasydemo.R;
@@ -16,8 +17,16 @@ import com.example.administrator.myeasydemo.commons.ActivityUtils;
 import com.example.administrator.myeasydemo.commons.LogUtils;
 import com.example.administrator.myeasydemo.commons.RegexUtils;
 import com.example.administrator.myeasydemo.components.ProgressDialogFragment;
+import com.example.administrator.myeasydemo.model.HttpResponse;
+import com.example.administrator.myeasydemo.model.UserLoginResponse;
+import com.example.administrator.myeasydemo.model.UserRegisterResponse;
+import com.example.administrator.myeasydemo.network.CallBackUI;
 import com.example.administrator.myeasydemo.network.EasyShopApi;
 import com.example.administrator.myeasydemo.network.HttpEasyShopClient;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -125,20 +134,15 @@ public class RegisterActivity extends AppCompatActivity {
     private void visitHttp() {
         HttpEasyShopClient.getInstance()
                 .visitHttp(username, password, EasyShopApi.REGISTER)
-                .enqueue(new Callback() {
+                .enqueue(new CallBackUI<UserRegisterResponse>() {
                     @Override
-                    public void onFailure(Call call, IOException e) {
-                        //连接失败
+                    public void onFailureUI(Call call, IOException e) {
+                        Toast.makeText(RegisterActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        //拿到响应
-                        if (response.isSuccessful()) {
-                            //拿到响应体
-                            ResponseBody responseBody = response.body();
-                            //解析
-                        }
+                    public void onResponseUI(Call call, HttpResponse<UserRegisterResponse> httpResponse) {
+                        Toast.makeText(RegisterActivity.this, "httpResponse="+httpResponse, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
