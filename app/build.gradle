@@ -36,4 +36,10 @@ dependencies {
     //日志拦截器
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.google.code.gson:gson:2.8.0'
+    //mosby3:mvp
+    compile 'com.hannesdorfmann.mosby3:mvp:3.0.0-alpha4'
+    //图片裁剪
+    compile 'org.hybridsquad.android.photocropper:library:2.1.0'
+    //上传图片
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 }

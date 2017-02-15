@@ -1,6 +1,7 @@
-package com.example.administrator.myeasydemo.user;
+package com.example.administrator.myeasydemo.user.register;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -14,39 +15,21 @@ import android.widget.Toast;
 
 import com.example.administrator.myeasydemo.R;
 import com.example.administrator.myeasydemo.commons.ActivityUtils;
-import com.example.administrator.myeasydemo.commons.LogUtils;
 import com.example.administrator.myeasydemo.commons.RegexUtils;
+import com.example.administrator.myeasydemo.components.AlertDialogFragment;
 import com.example.administrator.myeasydemo.components.ProgressDialogFragment;
-import com.example.administrator.myeasydemo.model.HttpResponse;
-import com.example.administrator.myeasydemo.model.UserLoginResponse;
-import com.example.administrator.myeasydemo.model.UserRegisterResponse;
-import com.example.administrator.myeasydemo.network.CallBackUI;
+import com.example.administrator.myeasydemo.main.MainActivity;
 import com.example.administrator.myeasydemo.network.EasyShopApi;
-import com.example.administrator.myeasydemo.network.HttpEasyShopClient;
-import com.google.gson.Gson;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
+import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
 
 import static com.example.administrator.myeasydemo.R.*;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends MvpActivity<RegisterView, RegisterPresenter> implements RegisterView {
 
     @BindView(id.toolbar)
     Toolbar toolbar;
@@ -117,39 +100,81 @@ public class RegisterActivity extends AppCompatActivity {
     @OnClick(id.btn_register)
     public void onClick() {
         if (RegexUtils.verifyUsername(username) != RegexUtils.VERIFY_SUCCESS) {
-            activityUtils.showToast(string.username_rules);
+            String msg = getString(R.string.username_rules);
+            showUserPasswordError(msg);
             return;
         } else if (RegexUtils.verifyPassword(password) != RegexUtils.VERIFY_SUCCESS) {
-            activityUtils.showToast(string.password_rules);
+            String msg = getString(R.string.password_rules);
+            showUserPasswordError(msg);
             return;
         } else if (!TextUtils.equals(password, pwd_again)) {
-            activityUtils.showToast(string.username_equal_pwd);
+            String msg = getString(R.string.username_equal_pwd);
+            showUserPasswordError(msg);
+
             return;
         }
 
         visitHttp();
     }
 
-    //    执行注册的网络请求
+    // 执行注册的网络请求
     private void visitHttp() {
-        HttpEasyShopClient.getInstance()
-                .visitHttp(username, password, EasyShopApi.REGISTER)
-                .enqueue(new CallBackUI<UserRegisterResponse>() {
-                    @Override
-                    public void onFailureUI(Call call, IOException e) {
-                        Toast.makeText(RegisterActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onResponseUI(Call call, HttpResponse<UserRegisterResponse> httpResponse) {
-                        Toast.makeText(RegisterActivity.this, "httpResponse="+httpResponse, Toast.LENGTH_SHORT).show();
-                    }
-                });
+        presenter.regiser(username, password, EasyShopApi.REGISTER);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+    }
+
+    @NonNull
+    @Override
+    public RegisterPresenter createPresenter() {
+        return new RegisterPresenter();
+    }
+
+    @Override
+    public void showpgb() {
+        //关闭软键盘
+        activityUtils.hideSoftKeyboard();
+        //初始化“进度条”
+        if (dialogFragment == null) dialogFragment = new ProgressDialogFragment();
+        //如果已经显示，则跳出
+        if (dialogFragment.isVisible()) return;
+        //"进度条"显示
+        dialogFragment.show(getSupportFragmentManager(), "progress_dialog_fragment");
+    }
+
+    @Override
+    public void hidepgb() {
+        dialogFragment.dismiss();
+    }
+
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void registerSuccess() {
+        //成功跳转到主页
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void registerFail() {
+        et_userName.setText("");
+        et_pwd.setText("");
+        et_pwdAgain.setText("");
+    }
+
+    @Override
+    public void showUserPasswordError(String msg) {
+        //展示弹出，提示错误信息
+        AlertDialogFragment fragment = AlertDialogFragment.newInstance(msg);
+        fragment.show(getSupportFragmentManager(), getString(R.string.username_pwd_rule));
     }
 }

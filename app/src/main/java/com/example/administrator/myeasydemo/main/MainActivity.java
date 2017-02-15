@@ -13,6 +13,7 @@ import com.example.administrator.myeasydemo.commons.ActivityUtils;
 import com.example.administrator.myeasydemo.main.me.MeFragment;
 import com.example.administrator.myeasydemo.main.shop.ShopFragment;
 import com.example.administrator.myeasydemo.main.shop.UnLoginFragment;
+import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -44,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bind = ButterKnife.bind(this);
         activityUtils = new ActivityUtils(this);
-
         //初始化视图
         init();
     }
