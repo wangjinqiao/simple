@@ -1,6 +1,8 @@
 package com.example.administrator.myeasydemo.main.shop.GoodsDetail;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.administrator.myeasydemo.R;
 import com.example.administrator.myeasydemo.commons.ActivityUtils;
+import com.example.administrator.myeasydemo.commons.LogUtils;
 import com.example.administrator.myeasydemo.components.AvatarLoadOptions;
 import com.example.administrator.myeasydemo.components.ProgressDialogFragment;
 import com.example.administrator.myeasydemo.model.CachePreferences;
@@ -97,6 +100,7 @@ public class GoodsDetailActivity extends MvpActivity<GoodsDetailView, GoodsDetai
             @Override
             public void onItemClick() {
                 //点击图片，跳转到图片详情页
+                LogUtils.e(imgUrls.size() + "点击图片，跳转到图片详情页");
                 Intent startIntent = GoodsPhotoDetailActivity.getStartIntent(GoodsDetailActivity.this, imgUrls);
                 startActivity(startIntent);
             }
@@ -118,6 +122,9 @@ public class GoodsDetailActivity extends MvpActivity<GoodsDetailView, GoodsDetai
         if (btn_show == 2) {
             tvGoodsDelete.setVisibility(View.VISIBLE);//显示“删除”
             btnDetailMessage.setVisibility(View.GONE);//隐藏“发消息“
+        }else{
+            tvGoodsDelete.setVisibility(View.GONE);//显示“发消息”
+            btnDetailMessage.setVisibility(View.VISIBLE);//隐藏“删除“
         }
         //获取商品详情，业务
         presenter.getData(str_uuid);
@@ -155,7 +162,7 @@ public class GoodsDetailActivity extends MvpActivity<GoodsDetailView, GoodsDetai
         for (int i = 0; i < imgUrls.size(); i++) {
             ImageView imageView = new ImageView(this);
             ImageLoader.getInstance()
-                    .displayImage(EasyShopApi.IMAGE_URL+arrayList.get(i),
+                    .displayImage(EasyShopApi.IMAGE_URL + arrayList.get(i),
                             imageView, AvatarLoadOptions.build_item());
             imgsData.add(imageView);
         }
@@ -202,8 +209,21 @@ public class GoodsDetailActivity extends MvpActivity<GoodsDetailView, GoodsDetai
         }
         switch (view.getId()) {
             case R.id.tv_goods_delete:
-                //删除
-                // TODO: 2017/2/16 0016
+                //警告删除
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.goods_title_delete);
+                builder.setMessage(R.string.goods_info_delete);
+                builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //删除
+                        presenter.deleteGoods(str_uuid);
+
+                    }
+                });
+                builder.setNegativeButton("取消", null);
+                builder.create().show();
+
                 break;
             case R.id.btn_detail_message:
                 // TODO: 2017/2/16 0016  环信发消息页面

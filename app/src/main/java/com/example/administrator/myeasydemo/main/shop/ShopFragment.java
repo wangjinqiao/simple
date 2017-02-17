@@ -112,14 +112,7 @@ public class ShopFragment extends MvpFragment<ShopView, ShopPresenter> implement
         });
     }
 
-    //
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
 //##################################   #########################################
 
     @Override

@@ -116,7 +116,7 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPersenter> imp
             switch (position) {
                 //用户名
                 case 0:
-                    activityUtils.showToast(getResources().getString(R.string.username_update));
+                    Toast.makeText(PersonActivity.this, getResources().getString(R.string.username_update), Toast.LENGTH_SHORT).show();
                     break;
                 //昵称
                 case 1:
@@ -124,7 +124,7 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPersenter> imp
                     break;
                 //环信ID
                 case 2:
-                    activityUtils.showToast(getResources().getString(R.string.id_update));
+                    Toast.makeText(PersonActivity.this, getResources().getString(R.string.id_update), Toast.LENGTH_SHORT).show();
                     break;
             }
         }

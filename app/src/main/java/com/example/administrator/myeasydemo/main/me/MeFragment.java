@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.administrator.myeasydemo.R;
 import com.example.administrator.myeasydemo.commons.ActivityUtils;
 import com.example.administrator.myeasydemo.components.AvatarLoadOptions;
+import com.example.administrator.myeasydemo.main.me.MyGoods.MyGoodsActivity;
 import com.example.administrator.myeasydemo.main.me.personInfo.PersonActivity;
 import com.example.administrator.myeasydemo.model.CachePreferences;
 import com.example.administrator.myeasydemo.network.EasyShopApi;
@@ -74,8 +75,8 @@ public class MeFragment extends Fragment {
                 activityUtils.startActivity(PersonActivity.class);
                 break;
             case R.id.tv_person_goods:
-                // TODO: 2017/2/14 0014 跳转到我的商品页面
-                activityUtils.showToast("我的商品页面，待实现");
+                //  跳转到我的商品页面
+                activityUtils.startActivity(MyGoodsActivity.class);
                 break;
             case R.id.tv_goods_upload:
                 // TODO: 2017/2/14 0014 跳转到商品上传页面

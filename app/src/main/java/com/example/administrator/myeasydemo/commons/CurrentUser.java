@@ -1,4 +1,4 @@
-package com.example.administrator.myeasydemo.commons;//package com.fuicuiedu.xc.easyshop_test_20170206.commons;
+package com.example.administrator.myeasydemo.commons;
 //
 //import com.fuicuiedu.idedemo.easyshop.model.User;
 //import com.fuicuiedu.idedemo.easyshop.network.EasyShopApi;

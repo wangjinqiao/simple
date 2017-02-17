@@ -32,7 +32,8 @@
         <activity android:name=".main.me.personInfo.PersonActivity" />
         <activity android:name=".Main2Activity" />
         <activity android:name=".main.shop.GoodsDetail.GoodsDetailActivity" />
-        <activity android:name=".main.shop.GoodsDetail.GoodsPhotoDetailActivity"></activity>
+        <activity android:name=".main.shop.GoodsDetail.GoodsPhotoDetailActivity" />
+        <activity android:name=".main.me.MyGoods.MyGoodsActivity"></activity>
     </application>
 
 </manifest>

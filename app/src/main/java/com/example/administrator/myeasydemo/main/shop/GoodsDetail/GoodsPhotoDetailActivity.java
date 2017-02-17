@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.example.administrator.myeasydemo.R;
@@ -21,10 +22,11 @@ import me.relex.circleindicator.CircleIndicator;
 public class GoodsPhotoDetailActivity extends AppCompatActivity {
     //用来拿图片地址的key
     private static final String IMAGES = "images";
-    @BindView(R.id.viewpager)
+
     ViewPager viewpager;
     @BindView(R.id.indicator)
     CircleIndicator indicator;
+
 
     public static Intent getStartIntent(Context context,
                                         ArrayList<String> imageUris) {
@@ -39,16 +41,23 @@ public class GoodsPhotoDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_detail_info);
         ButterKnife.bind(this);
+        viewpager = (ViewPager) this.findViewById(R.id.viewpager_goods_photo);
+        ArrayList<String> imgUrls = getIntent().getStringArrayListExtra(IMAGES);
+        GoogsDetailAdapter adapter = new GoogsDetailAdapter(getImage(imgUrls));
 
+        adapter.setListener(new GoogsDetailAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick() {
+                finish();
+            }
+        });
+        viewpager.setAdapter(adapter);
+        indicator.setViewPager(viewpager);
     }
 
     @Override
     public void onContentChanged() {
         super.onContentChanged();
-        ArrayList<String> imgUrls = getIntent().getStringArrayListExtra(IMAGES);
-        GoogsDetailAdapter adapter = new GoogsDetailAdapter(getImage(imgUrls));
-        viewpager.setAdapter(adapter);
-        indicator.setViewPager(viewpager);
     }
 
     private ArrayList<ImageView> getImage(ArrayList<String> list) {
