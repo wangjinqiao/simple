@@ -45,23 +45,23 @@
                 android:layout_height="@dimen/dp_370"
                 android:layout_alignParentStart="true" />
 
-            <!--<me.relex.circleindicator.CircleIndicator-->
-                <!--android:id="@+id/indicator"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dp_60"-->
-                <!--android:layout_alignBottom="@+id/viewpager"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_alignParentStart="true"-->
-                <!--app:ci_drawable="@drawable/circle_indicator" />-->
+            <me.relex.circleindicator.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_60"
+                android:layout_alignBottom="@+id/viewpager"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                app:ci_drawable="@drawable/circle_indicator" />
 
-            <!--<include-->
-                <!--android:id="@+id/linearLayout2"-->
-                <!--layout="@layout/layout_goods_detail"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_alignParentStart="true"-->
-                <!--android:layout_below="@+id/indicator" />-->
+            <include
+                android:id="@+id/linearLayout2"
+                layout="@layout/layout_goods_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/indicator" />
 
         </RelativeLayout>
 
@@ -81,7 +81,7 @@
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/btn_tell"
+            android:background="@color/colorPrimaryDark"
             android:text="@string/goods_detail_message"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_23"

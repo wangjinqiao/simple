@@ -42,4 +42,11 @@ dependencies {
     compile 'org.hybridsquad.android.photocropper:library:2.1.0'
     //上传图片
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    //recyclerview
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    //上拉刷新，下拉加载
+    compile 'in.srain.cube:ptr-load-more:1.0.2'
+    //圆点指示器 使用开源库CircleIndicator来实现ViewPager的圆点指示器
+    compile 'me.relex:circleindicator:1.2.1@aar'
+
 }

@@ -102,4 +102,31 @@ public class HttpEasyShopClient {
                 .build();
         return okHttpClient.newCall(request);
     }
+
+    //获取商品列表
+    public Call getGoods(int pageNum, String type) {
+        FormBody body = new FormBody.Builder()
+                .add("pageNo", pageNum + "")
+                .add("type", type)
+                .build();
+        Request request = new Request.Builder()
+                .url(EasyShopApi.BASE_URL + EasyShopApi.GETGOODS)
+                .post(body)
+                .build();
+        return okHttpClient.newCall(request);
+    }
+
+    //获取商品详情
+    public Call getGoodsData(String goodsUuid) {
+        RequestBody requestBody = new FormBody.Builder()
+                .add("uuid", goodsUuid)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(EasyShopApi.BASE_URL + EasyShopApi.DETAIL)
+                .post(requestBody)
+                .build();
+
+        return okHttpClient.newCall(request);
+    }
 }

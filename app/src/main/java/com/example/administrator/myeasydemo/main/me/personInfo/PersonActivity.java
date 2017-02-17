@@ -76,7 +76,7 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPersenter> imp
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(onItemClickListener);
         //获取用户头像，显示图像
-
+        updataAvatar(CachePreferences.getUser().getIconUrl());
     }
 
     @NonNull
@@ -222,7 +222,6 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPersenter> imp
             case R.id.iv_user_head:
                 // 头像来源选择（相册，拍照）
                 if (picWindow == null) {
-
                     picWindow = new PicWindow(this, listener);
                 }
                 if (picWindow.isShowing()) {

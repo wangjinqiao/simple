@@ -2,13 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.administrator.myeasydemo">
-    <!--网络权限-->
+
+    <!-- 网络权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--相机权限-->
+    <!-- 相机权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
 
     <application
         android:name=".main.MyApplication"
@@ -18,8 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-
-
         <activity android:name=".main.MainActivity" />
         <activity android:name=".main.SplashActivity">
             <intent-filter>
@@ -29,9 +27,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".user.login.LoginActivity" />
-        <activity android:name=".user.register.RegisterActivity"></activity>
-        <activity android:name=".main.NickNameActivity"></activity>
-        <activity android:name=".main.me.personInfo.PersonActivity"></activity>
+        <activity android:name=".user.register.RegisterActivity" />
+        <activity android:name=".main.NickNameActivity" />
+        <activity android:name=".main.me.personInfo.PersonActivity" />
+        <activity android:name=".Main2Activity" />
+        <activity android:name=".main.shop.GoodsDetail.GoodsDetailActivity" />
+        <activity android:name=".main.shop.GoodsDetail.GoodsPhotoDetailActivity"></activity>
     </application>
 
 </manifest>

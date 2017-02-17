@@ -41,7 +41,6 @@ public class CachePreferences {
         editor.putString(KEY_USER_TABLE_ID, user.getTable_key());
         editor.putString(KEY_USER_HEAD_IMAGE, user.getIconUrl());
         editor.putString(KEY_USER_NICKNAME, user.getNickname());
-
         editor.apply();
     }
 

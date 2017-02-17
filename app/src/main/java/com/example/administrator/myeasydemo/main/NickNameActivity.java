@@ -92,7 +92,7 @@ public class NickNameActivity extends AppCompatActivity {
                 CachePreferences.setUser(result.getData());
                 activityUtils.showToast("修改成功");
                 //返回
-                onBackPressed();
+                finish();
             }
         });
     }
